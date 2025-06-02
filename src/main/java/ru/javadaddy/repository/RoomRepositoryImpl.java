@@ -4,9 +4,10 @@ import ru.javadaddy.model.Room;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class RoomRepositoryImpl implements RoomRepository {
@@ -14,6 +15,8 @@ public class RoomRepositoryImpl implements RoomRepository {
     //TODO: реализовать инициализацию состояния
 
     private final List<Room> roomStorage = new ArrayList<>();
+    private final Map<Integer, List<LocalDate>> bookingsByRoomId = new HashMap<>();
+
     @Override
     public Optional<Room> findById(int roomId) {
         //TODO: реализовать логику поиска комнаты по идентификатору
@@ -37,15 +40,7 @@ public class RoomRepositoryImpl implements RoomRepository {
             throw new IllegalArgumentException("roomId должен быть больше 0");
         }
 
-        Room room = roomStorage.get(roomId);
-
-        if (room == null) {
-            return Collections.emptyList();
-        }
-
-
-
-        return List.of();
+        return bookingsByRoomId.getOrDefault(roomId, List.of());
     }
 
     @Override
