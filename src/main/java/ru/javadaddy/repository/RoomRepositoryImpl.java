@@ -4,7 +4,6 @@ import ru.javadaddy.model.Room;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,11 +39,15 @@ public class RoomRepositoryImpl implements RoomRepository {
             throw new IllegalArgumentException("roomId должен быть больше 0");
         }
 
-        return bookingsByRoomId.getOrDefault(roomId, List.of());
+            return bookingsByRoomId.getOrDefault(roomId, List.of());
     }
 
     @Override
     public void saveNewReservation(int roomId, List<LocalDate> dates) {
         //TODO: реализовать логику создания новых бронирований
+        if (roomId <= 0) {
+            throw new IllegalArgumentException("roomId должен быть больше 0");
+        }
+        bookingsByRoomId.put(roomId, dates);
     }
 }
