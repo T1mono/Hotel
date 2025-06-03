@@ -17,32 +17,28 @@ public class BookingService {
         // TODO: Реализовать проверку доступности номера
         List<LocalDate> datesByRoomId = roomRepository.findDatesByRoomId(room.id());
 
-        boolean isAvailable = true;
-
         if (checkIn == null) {
-            throw  new IllegalArgumentException("checkIn не может быть null");
+            throw new IllegalArgumentException("checkIn не может быть null");
         }
         if (checkOut == null) {
             throw new IllegalArgumentException("checkOut не может быть null");
-        }
-
-        if (datesByRoomId.isEmpty()) {
-            return isAvailable;
         }
 
         if (checkIn.isAfter(checkOut)) {
             throw new IllegalArgumentException("checkIn должен быть раньше checkOut");
         }
 
-        for(LocalDate localDate : datesByRoomId) {
-            if (localDate.isBefore(checkIn) && localDate.isBefore(checkOut)){
-                return !isAvailable;
-            }
-
-//            if (localDate.isBefore(checkIn) )
+        if (datesByRoomId.isEmpty()) {
+            return true;
         }
 
-        return false;
+        for (LocalDate localDate : datesByRoomId) {
+            if (!localDate.isBefore(checkIn) && !localDate.isAfter(checkOut)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public boolean bookRoom(Room room, LocalDate checkIn, LocalDate checkOut) {
